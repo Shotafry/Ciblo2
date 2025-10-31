@@ -16,14 +16,15 @@ import {
   Autocomplete
 } from '@mui/material'
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+// --- LÍNEA ARREGLADA ---
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3' // Añadimos V3
+// --- FIN DEL ARREGLO ---
 import { useNavigate } from 'react-router-dom'
 import { Layout } from '../components/Layout'
 import { useAuth } from '../context/AuthContext'
 import * as apiService from '../services/apiService'
 import { CreateEventDTO } from '../types'
 import { CYBERSECURITY_TAGS, EVENT_LEVELS } from '../constants/filters'
-// --- Importamos iconos de Material-UI ---
 import PeopleIcon from '@mui/icons-material/People'
 
 // (El tipo FormData se queda igual)
@@ -43,6 +44,7 @@ type FormData = {
 }
 
 const Page: FunctionComponent = () => {
+  // ... (El resto del archivo se queda exactamente igual) ...
   const navigate = useNavigate()
   const { user } = useAuth()
 
@@ -236,7 +238,6 @@ const Page: FunctionComponent = () => {
                       inputProps: { min: 0 },
                       endAdornment: (
                         <InputAdornment position='end'>
-                          {/* --- Icono de MUI --- */}
                           <PeopleIcon sx={{ color: 'var(--Gray-500)' }} />
                         </InputAdornment>
                       )
@@ -317,7 +318,7 @@ const Page: FunctionComponent = () => {
                   />
                 </Grid>
 
-                {/* --- Botones (sin cambios) --- */}
+                {/* --- Botones --- */}
                 <Grid
                   item
                   xs={12}
@@ -337,6 +338,7 @@ const Page: FunctionComponent = () => {
                       {error}
                     </Typography>
                   )}
+
                   <Button
                     variant='contained'
                     onClick={() => navigate('/panel-de-organizador')}

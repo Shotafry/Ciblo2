@@ -8,33 +8,33 @@ import {
   CircularProgress
 } from '@mui/material'
 import { LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+// --- LÍNEA ARREGLADA ---
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3' // Añadimos V3
+// --- FIN DEL ARREGLO ---
 import { css } from '@emotion/css'
 import { Layout } from '../components/Layout'
 import { EventMap } from '../components/EventMap'
 import { EventCard } from '../components/EventCard'
-import { Event, EventFilterParams } from '../types' // Importamos EventFilterParams
+import { Event, EventFilterParams } from '../types'
 import * as apiService from '../services/apiService'
-import { EventFilters } from '../components/EventFilters' // Importamos los Filtros
+import { EventFilters } from '../components/EventFilters'
 
 const LandingPage: FunctionComponent = () => {
-  // --- MODIFICADO PARA PULIR DETALLES ---
-  // Estados para los datos y la carga
+  // ... (El resto del archivo se queda exactamente igual) ...
   const [events, setEvents] = useState<Event[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [filters, setFilters] = useState<EventFilterParams>({
     startDate: null,
     endDate: null,
     tags: [],
-    locations: []
+    locations: [],
+    levels: []
   })
 
-  // Efecto para cargar los eventos
   useEffect(() => {
     const loadEvents = async () => {
       setIsLoading(true)
       try {
-        // Pasamos los filtros a la API simulada
         const fetchedEvents = await apiService.getEvents(filters)
         setEvents(fetchedEvents)
       } catch (error) {
@@ -44,7 +44,7 @@ const LandingPage: FunctionComponent = () => {
       }
     }
     loadEvents()
-  }, [filters]) // Se re-ejecuta CADA VEZ que los filtros cambian
+  }, [filters])
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -190,16 +190,11 @@ const LandingPage: FunctionComponent = () => {
             flexDirection: 'column',
             alignItems: 'center',
             padding: { xs: '0 16px 85px 16px', md: '0 27px 85px 27px' },
-            gap: { xs: '60px', md: '80px' }, // Aumentamos el espacio
+            gap: { xs: '60px', md: '80px' },
             textAlign: 'center',
             color: 'var(--Gray-500)'
           }}
         >
-          {/* Aquí iría la sección de Estadísticas que diseñaste.
-            La omitimos por ahora para centrarnos en los filtros,
-            pero iría aquí.
-          */}
-
           {/* --- NUEVO: Sección de Filtros --- */}
           <EventFilters filters={filters} onFilterChange={setFilters} />
 
