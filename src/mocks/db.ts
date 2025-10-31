@@ -42,7 +42,7 @@ export let mockEvents: Event[] = [
       'La mayor conferencia de ciberseguridad de España. Dos días llenos de charlas magistrales, talleres prácticos y networking con los mejores profesionales del sector.',
     type: 'conference',
     category: 'Security Conference',
-    level: 'Intermedio', // --- MODIFICADO
+    level: 'Intermedio',
     start_date: '2025-11-14T09:00:00Z',
     end_date: '2025-11-15T18:00:00Z',
     is_online: false,
@@ -75,7 +75,7 @@ export let mockEvents: Event[] = [
       'Bootcamp intensivo de 3 días para aprender ethical hacking desde cero hasta nivel avanzado. Incluye laboratorios prácticos.',
     type: 'training',
     category: 'Ethical Hacking',
-    level: 'Principiante', // --- MODIFICADO
+    level: 'Principiante',
     start_date: '2025-12-10T09:00:00Z',
     end_date: '2025-12-12T17:00:00Z',
     is_online: true,
@@ -103,7 +103,7 @@ export let mockEvents: Event[] = [
       'Evento presencial donde dos equipos competirán en tiempo real: Red Team intentando comprometer la infraestructura mientras Blue Team la defiende.',
     type: 'competition',
     category: 'Red Team',
-    level: 'Avanzado', // --- MODIFICADO
+    level: 'Avanzado',
     start_date: '2025-11-28T10:00:00Z',
     end_date: '2025-11-28T16:00:00Z',
     is_online: false,
@@ -125,7 +125,6 @@ export let mockEvents: Event[] = [
     is_past: false,
     is_ongoing: false
   },
-  // --- NUEVO EVENTO DE PRUEBA ---
   {
     id: 'evt-004',
     slug: 'dfir-workshop-sevilla',
@@ -149,7 +148,7 @@ export let mockEvents: Event[] = [
     max_attendees: 50,
     current_attendees: 45,
     is_free: false,
-    price: 7500, // 75€
+    price: 7500,
     image_url: '/cyberLogo-gigapixel-art-scale-2-00x-godpix-11@2x.png',
     banner_url: '',
     tags: ['Taller', 'DFIR', 'Forense', 'Respuesta a Incidentes', 'Sevilla'],
