@@ -1,14 +1,3 @@
-¡Estupendo\! Es el remate perfecto para el proyecto. Vamos a por ello paso a paso.
-
-Empezamos por la primera tarea: **crear un `README.md` bien hecho.**
-
-El archivo `README.md` que tienes ahora es el que venía por defecto y no describe el proyecto.
-
-Aquí tienes el contenido completo para el nuevo `README.md`. Borra todo el contenido del archivo `README.md` actual y pega esto en su lugar.
-
----
-
-### Tarea 1: Sobrescribe tu `README.md`
 
 ````markdown
 # CibESphere (Frontend)
