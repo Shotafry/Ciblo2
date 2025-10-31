@@ -1,5 +1,5 @@
 // src/services/apiService.ts
-import { mockUsers, mockEvents } from '../mocks/db'
+import { mockUsers as dbUsers, mockEvents as dbEvents } from '../mocks/db' // Renombramos la importación
 import {
   AuthResponse,
   User,
@@ -11,6 +11,12 @@ import {
   Role,
   OrganizationSummary
 } from '../types'
+
+// --- LÍNEAS ARREGLADAS ---
+// Creamos copias locales que SÍ podemos modificar
+let mockUsers = [...dbUsers]
+let mockEvents = [...dbEvents]
+// --- FIN DEL ARREGLO ---
 
 const SIMULATED_DELAY = 1000
 
@@ -40,7 +46,7 @@ export const login = (
   })
 }
 
-// --- MODIFICADO: Registro completo ---
+// --- ARREGLADO ---
 export const register = (data: RegisterDTO): Promise<AuthResponse> => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -50,14 +56,13 @@ export const register = (data: RegisterDTO): Promise<AuthResponse> => {
       }
 
       let newUserOrg: OrganizationSummary | undefined = undefined
-      // Si se registra como organizador, creamos una nueva organización simulada
       if (data.role === Role.Organizer && data.organization_name) {
         newUserOrg = {
           id: `org-00${mockUsers.length + 1}`,
           slug: data.organization_name.toLowerCase().replace(/\s+/g, '-'),
           name: data.organization_name,
           logo_url: '',
-          is_verified: false, // Los nuevos organizadores no están verificados
+          is_verified: false,
           city: 'Desconocida',
           country: 'Spain'
         }
@@ -72,12 +77,14 @@ export const register = (data: RegisterDTO): Promise<AuthResponse> => {
         full_name: `${data.first_name} ${data.last_name}`,
         role: data.role,
         is_active: true,
-        is_verified: false, // Los nuevos usuarios no están verificados
+        is_verified: false,
         created_at: new Date().toISOString(),
-        organization: newUserOrg // Asignamos la nueva organización
+        organization: newUserOrg
       }
 
-      mockUsers.push(newUser) // Añadimos el nuevo usuario a nuestra BD simulada
+      // --- LÍNEA ARREGLADA ---
+      mockUsers.push(newUser) // Modificamos la copia local
+      // --- FIN DEL ARREGLO ---
 
       const authResponse: AuthResponse = {
         user: newUser,
@@ -91,9 +98,8 @@ export const register = (data: RegisterDTO): Promise<AuthResponse> => {
   })
 }
 
-// --- Funciones de Eventos (se quedan igual) ---
+// --- Funciones de Eventos (sin cambios) ---
 export const getEvents = (filters: EventFilterParams): Promise<Event[]> => {
-  // ... (código se queda igual) ...
   return new Promise((resolve) => {
     setTimeout(() => {
       let filteredEvents = [
@@ -131,7 +137,6 @@ export const getEvents = (filters: EventFilterParams): Promise<Event[]> => {
   })
 }
 export const getEventBySlug = (slug: string): Promise<Event> => {
-  // ... (código se queda igual) ...
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       const event = mockEvents.find((e) => e.slug === slug)
@@ -147,7 +152,6 @@ export const subscribeToEvent = (
   eventId: string,
   email: string
 ): Promise<{ message: string }> => {
-  // ... (código se queda igual) ...
   return new Promise((resolve) => {
     setTimeout(() => {
       console.log(`Email ${email} suscrito al evento ${eventId}`)
@@ -156,9 +160,8 @@ export const subscribeToEvent = (
   })
 }
 
-// --- Funciones de User (se quedan igual) ---
+// --- Funciones de User (getMe sin cambios) ---
 export const getMe = (userId: string): Promise<User> => {
-  // ... (código se queda igual) ...
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       const user = mockUsers.find((u) => u.id === userId)
@@ -170,13 +173,16 @@ export const getMe = (userId: string): Promise<User> => {
     }, SIMULATED_DELAY / 2)
   })
 }
+
+// --- ARREGLADO ---
 export const unsubscribeFromEvent = (
   userId: string,
   eventId: string
 ): Promise<void> => {
-  // ... (código se queda igual) ...
   return new Promise((resolve) => {
     setTimeout(() => {
+      // --- LÍNEA ARREGLADA ---
+      // Modificamos la copia local
       mockUsers = mockUsers.map((user) => {
         if (user.id === userId) {
           return {
@@ -188,6 +194,7 @@ export const unsubscribeFromEvent = (
         }
         return user
       })
+      // --- FIN DEL ARREGLO ---
       console.log(
         `Usuario ${userId} ha cancelado suscripción al evento ${eventId}`
       )
@@ -196,11 +203,10 @@ export const unsubscribeFromEvent = (
   })
 }
 
-// --- Funciones de Organizador (se quedan igual) ---
+// --- Funciones de Organizador (getDashboard y getOrgEvents sin cambios) ---
 export const getOrganizerDashboard = (
   orgId: string
 ): Promise<DashboardStats> => {
-  // ... (código se queda igual) ...
   return new Promise((resolve) => {
     setTimeout(() => {
       const orgEvents = mockEvents.filter((e) => e.organization.id === orgId)
@@ -220,7 +226,6 @@ export const getOrganizerDashboard = (
   })
 }
 export const getOrganizationEvents = (orgId: string): Promise<Event[]> => {
-  // ... (código se queda igual) ...
   return new Promise((resolve) => {
     setTimeout(() => {
       const orgEvents = mockEvents.filter((e) => e.organization.id === orgId)
@@ -228,11 +233,12 @@ export const getOrganizationEvents = (orgId: string): Promise<Event[]> => {
     }, SIMULATED_DELAY / 2)
   })
 }
+
+// --- ARREGLADO ---
 export const createEvent = (
   eventData: CreateEventDTO,
   organization: OrganizationSummary
 ): Promise<Event> => {
-  // ... (código se queda igual) ...
   return new Promise((resolve) => {
     setTimeout(() => {
       const newEvent: Event = {
@@ -248,16 +254,23 @@ export const createEvent = (
         type: eventData.tags[0] || 'General',
         ...eventData
       }
-      mockEvents.push(newEvent)
+
+      // --- LÍNEA ARREGLADA ---
+      mockEvents.push(newEvent) // Modificamos la copia local
+      // --- FIN DEL ARREGLO ---
+
       resolve(newEvent)
     }, SIMULATED_DELAY)
   })
 }
+
+// --- ARREGLADO ---
 export const deleteEvent = (eventId: string): Promise<void> => {
-  // ... (código se queda igual) ...
   return new Promise((resolve) => {
     setTimeout(() => {
-      mockEvents = mockEvents.filter((e) => e.id !== eventId)
+      // --- LÍNEA ARREGLADA ---
+      mockEvents = mockEvents.filter((e) => e.id !== eventId) // Modificamos la copia local
+      // --- FIN DEL ARREGLO ---
       resolve()
     }, SIMULATED_DELAY / 2)
   })
